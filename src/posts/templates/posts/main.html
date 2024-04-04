@@ -1,0 +1,19 @@
+{% extends "base.html" %}
+
+{% load static %}
+
+{% block scripts %}
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script src="{% static 'posts/main.js' %}" defer></script>
+{% endblock scripts %}
+
+{% block title %}
+Posts
+{% endblock title %}
+
+{% block content %}
+{% comment %} {% for obj in qs %}
+    {{obj.title}} - {{obj.body}} <br>
+{% endfor %} {% endcomment %}
+    <div id="posts-box"></div>
+{% endblock content %}
