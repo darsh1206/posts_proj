@@ -2,6 +2,11 @@ const postsBox = document.getElementById("posts-box");
 const spinnerBox = document.getElementById("spinner-box");
 const loadMoreBtn = document.getElementById("load-btn");
 const endBox = document.getElementById("end-box");
+const postForm = document.getElementById("post-form");
+const title = document.getElementById("id_title");
+const body = document.getElementById("id_body");
+const csrf = document.getElementsByName("csrfmiddlewaretoken");
+const alertBox = document.getElementById("alert-box");
 
 const getCookie = (name) => {
   let cookieValue = null;
@@ -113,4 +118,52 @@ loadMoreBtn.addEventListener("click", () => {
   getData();
 });
 
+postForm.addEventListener("submit", (e) => {
+  e.preventDefault();
+  $.ajax({
+    type: "POST",
+    url: "",
+    data: {
+      csrfmiddlewaretoken: csrf[0].value,
+      title: title.value,
+      body: body.value,
+    },
+    success: function (response) {
+      console.log(response);
+      postsBox.insertAdjacentHTML(
+        "afterbegin",
+        `
+      <div class="card mb-2">
+        <div class="card-body" >
+            <h5 class="card-title">${response.title}</h5>
+            <p class="card-text">${response.body}</p>    
+        </div>
+        <div class="card-footer">
+          <div class="row">
+            <div class="col-1">
+              <a href="#" class="btn btn-primary ">Details</a>
+            </div>
+            <div class="col-2">
+              <form class="like-unlike" data-form-id="${response.id}">
+                <button class="btn btn-primary like-unlike-btn" id="like-unlike-${response.id}">
+                 Like (0)
+                </button>
+              </form>
+            </div>
+          </div>
+        </div>
+    </div>
+      `
+      );
+      likeUnlikePosts();
+      $("#addPostModal").modal("hide");
+      handleAlerts("success", "New Post Added");
+      postForm.reset();
+    },
+    error: function (error) {
+      console.log(error);
+      handleAlerts("danger", "Something went wrong");
+    },
+  });
+});
 getData();
