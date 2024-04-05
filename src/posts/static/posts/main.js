@@ -25,6 +25,12 @@ const getCookie = (name) => {
   return cookieValue;
 };
 const csrftoken = getCookie("csrftoken");
+const deleted = localStorage.getItem("title");
+
+if (deleted) {
+  handleAlerts("danger", `<b>${deleted}</b> deleted!`);
+  localStorage.clear();
+}
 
 const likeUnlikePosts = () => {
   postsBox.addEventListener("submit", (e) => {
@@ -74,7 +80,9 @@ const getData = () => {
                       <div class="card-footer">
                             <div class="row">
                               <div class="col-1">
-                                  <a href="${url}${element.id}" class="btn btn-primary ">Details</a>
+                                  <a href="${url}${
+            element.id
+          }" class="btn btn-primary ">Details</a>
                               </div>
                               <div class="col-2">
                               <form class="like-unlike" data-form-id="${

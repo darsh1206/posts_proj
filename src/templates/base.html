@@ -21,6 +21,9 @@
     <!--JQuery-->
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 
+    <!-- Functions.js -->
+    <script src="{% static 'functions.js' %}" defer></script>
+
     {% block scripts %} {% endblock scripts %}
     <title>read posts | {% block title %}{% endblock title %} about</title>
   </head>
@@ -38,7 +41,5 @@
       integrity="sha384-0pUGZvbkm6XF6gxjEnlmuGrJXVbNuzT9qBBavbLwCsOGabYfZo0T0to5eqruptLy"
       crossorigin="anonymous"
     ></script>
-    <!-- Functions.js -->
-    <script src="{% static 'functions.js' %}" defer></script>
   </body>
 </html>
