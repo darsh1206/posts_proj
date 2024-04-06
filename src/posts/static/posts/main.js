@@ -176,6 +176,7 @@ postForm.addEventListener("submit", (e) => {
       likeUnlikePosts();
       // $("#addPostModal").modal("hide");
       handleAlerts("success", "New Post Added");
+      addBtn.classList.add("not-visible");
       // postForm.reset();
     },
     error: function (error) {
