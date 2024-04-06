@@ -1,5 +1,5 @@
 from django.shortcuts import render, redirect
-from .models import Post, Photo
+from .models import Post, Photo, User
 from django.http import JsonResponse, HttpResponse
 from .forms import PostForm
 from profiles.models import Profile
@@ -65,10 +65,13 @@ def like_unlike_post(request):
 def post_details(request, pk):
     obj = Post.objects.get(pk=pk)
     form = PostForm()
-
+    user = User.objects.get(profile__post=obj) 
+    avatar = user.profile.avatar if hasattr(user, 'profile') else None
     context={
         'obj': obj,
         'form': form,
+        'user': user,
+        'avatar': avatar
     }
     return render(request, 'posts/detail.html', context)
 
