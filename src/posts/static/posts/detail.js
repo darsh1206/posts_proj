@@ -16,9 +16,9 @@ const deleteForm = document.getElementById("delete-form");
 const titleInput = document.getElementById("id_title");
 const bodyInput = document.getElementById("id_body");
 
-backbtn.addEventListener("click", () => {
-  history.back();
-});
+// backbtn.addEventListener("click", () => {
+//   history.back();
+// });
 
 $.ajax({
   type: "GET",

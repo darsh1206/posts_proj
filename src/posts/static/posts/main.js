@@ -1,13 +1,20 @@
 const postsBox = document.getElementById("posts-box");
+const alertBox = document.getElementById("alert-box");
 const spinnerBox = document.getElementById("spinner-box");
+
 const loadMoreBtn = document.getElementById("load-btn");
 const endBox = document.getElementById("end-box");
+
 const postForm = document.getElementById("post-form");
 const title = document.getElementById("id_title");
 const body = document.getElementById("id_body");
 const csrf = document.getElementsByName("csrfmiddlewaretoken");
-const alertBox = document.getElementById("alert-box");
+
 const url = window.location.href;
+
+const addBtn = document.getElementById("add-btn");
+const closeBtns = document.getElementsByClassName("add-modal-close");
+const dropzone = document.getElementById("my-dropzone");
 
 const getCookie = (name) => {
   let cookieValue = null;
@@ -127,6 +134,7 @@ loadMoreBtn.addEventListener("click", () => {
   getData();
 });
 
+let newPostId = null;
 postForm.addEventListener("submit", (e) => {
   e.preventDefault();
   $.ajax({
@@ -138,7 +146,8 @@ postForm.addEventListener("submit", (e) => {
       body: body.value,
     },
     success: function (response) {
-      console.log(response);
+      console.log("response with ID", response);
+      newPostId = response.id;
       postsBox.insertAdjacentHTML(
         "afterbegin",
         `
@@ -165,9 +174,9 @@ postForm.addEventListener("submit", (e) => {
       `
       );
       likeUnlikePosts();
-      $("#addPostModal").modal("hide");
+      // $("#addPostModal").modal("hide");
       handleAlerts("success", "New Post Added");
-      postForm.reset();
+      // postForm.reset();
     },
     error: function (error) {
       console.log(error);
@@ -175,4 +184,35 @@ postForm.addEventListener("submit", (e) => {
     },
   });
 });
+
+addBtn.addEventListener("click", () => {
+  dropzone.classList.remove("not-visible");
+});
+
+closeBtns.forEach((e) => {
+  e.addEventListener("click", () => {
+    postForm.reset();
+    if (!dropzone.classList.contains("not-visible")) {
+      dropzone.classList.add("not-visible");
+    }
+
+    const mydropzone = Dropzone.forElement("#my-dropzone");
+    mydropzone.removeAllFiles(true);
+  });
+});
+
+Dropzone.autoDiscover = false;
+const myDropZone = new Dropzone("#my-dropzone", {
+  url: "upload/",
+  init: function () {
+    this.on("sending", function (file, xhr, formData) {
+      formData.append("csrfmiddlewaretoken", csrftoken);
+      formData.append("new_post_id", newPostId);
+    });
+  },
+  maxFiles: 5,
+  maxFilesize: 4,
+  acceptedFiles: ".jpeg, .jpg, .png",
+});
+
 getData();
