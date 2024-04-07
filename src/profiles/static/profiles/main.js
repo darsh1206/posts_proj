@@ -20,7 +20,7 @@ profileForm.addEventListener("submit", (e) => {
     success: function (response) {
       console.log(response);
       avatarBox.innerHTML = `
-      <img src="${response.avatar}" class="rounded" height="200px" width="auto" alt = "{{obj.user.username}}">
+      <img src="${response.avatar}" class="rounded" height="200px" width="auto" alt = "${response.user}">
       `;
       bioInput.value = response.bio;
       handleAlerts("success", "Your profile changes has been saved");
